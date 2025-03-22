@@ -1,0 +1,1290 @@
+{
+	"guitarStandard": {
+		"name": "Guitar Standard",
+		"strings": [
+			{
+				"open_note_name": "e",
+				"open_note_octave": 4,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "b",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "e",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			}
+		]
+	},
+	"guitarDropD": {
+		"name": "Guitar Drop D",
+		"strings": [
+			{
+				"open_note_name": "e",
+				"open_note_octave": 4,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "b",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			}
+		]
+	},
+	"guitarDoubleDropD": {
+		"name": "Guitar Double Drop D",
+		"strings": [
+			{
+				"open_note_name": "d",
+				"open_note_octave": 4,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "b",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			}
+		]
+	},
+	"guitarDropC": {
+		"name": "Guitar Drop C",
+		"strings": [
+			{
+				"open_note_name": "d",
+				"open_note_octave": 4,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "f",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "c",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "c",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			}
+		]
+	},
+	"guitarDropB": {
+		"name": "Guitar Drop B",
+		"strings": [
+			{
+				"open_note_name": "c#",
+				"open_note_octave": 4,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "g#",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "e",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "b",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "f#",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "b",
+				"open_note_octave": 1,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			}
+		]
+	},
+	"guitarEb": {
+		"name": "Guitar Eb",
+		"strings": [
+			{
+				"open_note_name": "d#",
+				"open_note_octave": 4,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "a#",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "f#",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "c#",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "g#",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "d#",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			}
+		]
+	},
+	"guitarD": {
+		"name": "Guitar D",
+		"strings": [
+			{
+				"open_note_name": "d",
+				"open_note_octave": 4,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "f",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "c",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			}
+		]
+	},
+	"guitarC": {
+		"name": "Guitar C",
+		"strings": [
+			{
+				"open_note_name": "c",
+				"open_note_octave": 4,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "d#",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "a#",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "f",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "c",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			}
+		]
+	},
+	"guitarOpenD": {
+		"name": "Guitar Open D",
+		"strings": [
+			{
+				"open_note_name": "d",
+				"open_note_octave": 4,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "f#",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			}
+		]
+	},
+	"guitarOpenG": {
+		"name": "Guitar Open G",
+		"strings": [
+			{
+				"open_note_name": "d",
+				"open_note_octave": 4,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "b",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			}
+		]
+	},
+	"guitarDModal": {
+		"name": "Guitar D Modal",
+		"strings": [
+			{
+				"open_note_name": "d",
+				"open_note_octave": 4,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			}
+		]
+	},
+	"guitarOpenA": {
+		"name": "Guitar Open A",
+		"strings": [
+			{
+				"open_note_name": "e",
+				"open_note_octave": 4,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "e",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "c#",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "e",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			}
+		]
+	},
+	"guitarOpenE": {
+		"name": "Guitar Open E",
+		"strings": [
+			{
+				"open_note_name": "e",
+				"open_note_octave": 4,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "b",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "g#",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "e",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "b",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "e",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			}
+		]
+	},
+	"guitarOpenC": {
+		"name": "Guitar Open C",
+		"strings": [
+			{
+				"open_note_name": "e",
+				"open_note_octave": 4,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "c",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "c",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "c",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			}
+		]
+	},
+	"guitarNst": {
+		"name": "Guitar NST",
+		"strings": [
+			{
+				"open_note_name": "g",
+				"open_note_octave": 4,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "e",
+				"open_note_octave": 4,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "c",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			}
+		]
+	},
+	"guitar8StringsStandard": {
+		"name": "Guitar 8 Strings Standard",
+		"strings": [
+			{
+				"open_note_name": "e",
+				"open_note_octave": 4,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "b",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "e",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "b",
+				"open_note_octave": 1,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "f#",
+				"open_note_octave": 1,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeBig"
+			}
+		]
+	},
+	"guitar8StringsDropE": {
+		"name": "Guitar 8 Strings Drop E",
+		"strings": [
+			{
+				"open_note_name": "e",
+				"open_note_octave": 4,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "b",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "e",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "b",
+				"open_note_octave": 1,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "e",
+				"open_note_octave": 1,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeBig"
+			}
+		]
+	},
+	"bassStandard": {
+		"name": "Bass Standard",
+		"strings": [
+			{
+				"open_note_name": "g",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 1,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "e",
+				"open_note_octave": 1,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeBig"
+			}
+		]
+	},
+	"bass6Strings": {
+		"name": "Bass 6 Strings",
+		"strings": [
+			{
+				"open_note_name": "c",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 1,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "e",
+				"open_note_octave": 1,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeBig"
+			},
+			{
+				"open_note_name": "b",
+				"open_note_octave": 0,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeBig"
+			}
+		]
+	},
+	"cello": {
+		"name": "Cello",
+		"strings": [
+			{
+				"open_note_name": "a",
+				"open_note_octave": 2,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 2,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 1,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "c",
+				"open_note_octave": 1,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeBig"
+			}
+		]
+	},
+	"mandola": {
+		"name": "Mandola",
+		"strings": [
+			{
+				"open_note_name": "a",
+				"open_note_octave": 3,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 3,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 2,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "c",
+				"open_note_octave": 2,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeMedium"
+			}
+		]
+	},
+	"banjoIrish": {
+		"name": "Banjo Irish",
+		"strings": [
+			{
+				"open_note_name": "e",
+				"open_note_octave": 4,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 3,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 3,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 3,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeMedium"
+			}
+		]
+	},
+	"banjoTenor": {
+		"name": "Banjo Tenor",
+		"strings": [
+			{
+				"open_note_name": "a",
+				"open_note_octave": 4,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 4,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 3,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "c",
+				"open_note_octave": 3,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeMedium"
+			}
+		]
+	},
+	"banjoChicago": {
+		"name": "Banjo Chicago",
+		"strings": [
+			{
+				"open_note_name": "e",
+				"open_note_octave": 4,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "b",
+				"open_note_octave": 3,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 3,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 3,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeMedium"
+			}
+		]
+	},
+	"violin": {
+		"name": "Violin",
+		"strings": [
+			{
+				"open_note_name": "e",
+				"open_note_octave": 5,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 4,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 4,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 3,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeMedium"
+			}
+		]
+	},
+	"viola": {
+		"name": "Viola",
+		"strings": [
+			{
+				"open_note_name": "a",
+				"open_note_octave": 5,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 4,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 3,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "c",
+				"open_note_octave": 3,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeMedium"
+			}
+		]
+	},
+	"ukuleleD": {
+		"name": "Ukulele D",
+		"strings": [
+			{
+				"open_note_name": "b",
+				"open_note_octave": 4,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "f#",
+				"open_note_octave": 4,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 4,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 3,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeMedium"
+			}
+		]
+	},
+	"ukuleleC": {
+		"name": "Ukulele C",
+		"strings": [
+			{
+				"open_note_name": "a",
+				"open_note_octave": 4,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "e",
+				"open_note_octave": 4,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "c",
+				"open_note_octave": 4,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 3,
+				"number_of_frets": 16,
+				"string_gauge": "stringGaugeMedium"
+			}
+		]
+	},
+	"stickLeftHandClassic": {
+		"name": "Stick Left Hand Classic",
+		"strings": [
+			{
+				"open_note_name": "c",
+				"open_note_octave": 1,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeBig"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 1,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "e",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "b",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			}
+		]
+	},
+	"stickRightHandClassic": {
+		"name": "Stick Right Hand Classic",
+		"strings": [
+			{
+				"open_note_name": "d",
+				"open_note_octave": 4,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "e",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "b",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "f#",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "c#",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			}
+		]
+	},
+	"stick12Classic": {
+		"name": "Stick 12 Classic",
+		"strings": [
+			{
+				"open_note_name": "d",
+				"open_note_octave": 4,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "e",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "b",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "f#",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "c#",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "c",
+				"open_note_octave": 1,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeBig"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 1,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "e",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "b",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			}
+		]
+	},
+	"stick12MatchedReciprocal": {
+		"name": "Stick 12 Matched Reciprocal",
+		"strings": [
+			{
+				"open_note_name": "c",
+				"open_note_octave": 4,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "e",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "b",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "c",
+				"open_note_octave": 1,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeBig"
+			},
+			{
+				"open_note_name": "g",
+				"open_note_octave": 1,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThick"
+			},
+			{
+				"open_note_name": "d",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeMedium"
+			},
+			{
+				"open_note_name": "a",
+				"open_note_octave": 2,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "e",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			},
+			{
+				"open_note_name": "b",
+				"open_note_octave": 3,
+				"number_of_frets": 24,
+				"string_gauge": "stringGaugeThin"
+			}
+		]
+	}
+}
