@@ -7,17 +7,17 @@ import "core:math"
 import "core:os"
 import "core:strings"
 
-init_WME :: proc() {
+init_owme :: proc() {
 	log.info("Using JSON data")
 	_ = init_notes_from_json()
 	_ = init_tunings_from_json()
 
 }
 
-cleanup_WME :: proc() {
+cleanup_owme :: proc() {
 	cleanup_notes()
 	cleanup_tunings()
-	log.info("WME cleaned up")
+	log.info("owme cleaned up")
 }
 
 

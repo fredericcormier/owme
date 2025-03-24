@@ -206,57 +206,57 @@ test_midi_note_number_from_frequency_3 :: proc(t: ^testing.T) {
 @(test)
 //[60, 64, 67]
 test_chord_1 :: proc(t: ^testing.T) {
-	init_WME()
+	init_owme()
 	chord := chord("C", 4, "major")
 	testing.expectf(t, chord[0] == 60, "Chord note 0 should be 60, not %d", chord[0])
 	testing.expectf(t, chord[1] == 64, "Chord note 1 should be 64, not %d", chord[1])
 	testing.expectf(t, chord[2] == 67, "Chord note 2 should be 67, not %d", chord[2])
 	delete(chord)
-	cleanup_WME()
+	cleanup_owme()
 
 }
 @(test)
 //[62, 65, 69]
 test_chord_2 :: proc(t: ^testing.T) {
-	init_WME()
+	init_owme()
 	chord := chord("D", 4, "major")
 	testing.expectf(t, chord[0] == 62, "Chord note 0 should be 62, not %d", chord[0])
 	testing.expectf(t, chord[1] == 66, "Chord note 1 should be 66, not %d", chord[1])
 	testing.expectf(t, chord[2] == 69, "Chord note 2 should be 69, not %d", chord[2])
 	delete(chord)
-	cleanup_WME()
+	cleanup_owme()
 }
 
 
 @(test)
 //[64, 67, 71]
 test_chord_3 :: proc(t: ^testing.T) {
-	init_WME()
+	init_owme()
 	chord := chord("E", 4, "major")
 	testing.expectf(t, chord[0] == 64, "Chord note 0 should be 64, not %d", chord[0])
 	testing.expectf(t, chord[1] == 68, "Chord note 1 should be 68, not %d", chord[1])
 	testing.expectf(t, chord[2] == 71, "Chord note 2 should be 71, not %d", chord[2])
 	delete(chord)
-	cleanup_WME()
+	cleanup_owme()
 }
 
 @(test)
 //[30,33,37,40]
 test_chord_4 :: proc(t: ^testing.T) {
-	init_WME()
+	init_owme()
 	chord := chord("F#", 1, "minor7")
 	testing.expectf(t, chord[0] == 30, "Chord note 0 should be 30, not %d", chord[0])
 	testing.expectf(t, chord[1] == 33, "Chord note 1 should be 33, not %d", chord[1])
 	testing.expectf(t, chord[2] == 37, "Chord note 2 should be 37, not %d", chord[2])
 	testing.expectf(t, chord[3] == 40, "Chord note 3 should be 40, not %d", chord[3])
 	delete(chord)
-	cleanup_WME()
+	cleanup_owme()
 }
 
 @(test)
 //[30,34,37,41,44,47,51]
 test_chord_5 :: proc(t: ^testing.T) {
-	init_WME()
+	init_owme()
 	chord := chord("F#", 1, "major13")
 	testing.expectf(t, chord[0] == 30, "Chord note 0 should be 30, not %d", chord[0])
 	testing.expectf(t, chord[1] == 34, "Chord note 1 should be 34, not %d", chord[1])
@@ -266,7 +266,7 @@ test_chord_5 :: proc(t: ^testing.T) {
 	testing.expectf(t, chord[5] == 47, "Chord note 5 should be 47, not %d", chord[5])
 	testing.expectf(t, chord[6] == 51, "Chord note 6 should be 51, not %d", chord[6])
 	delete(chord)
-	cleanup_WME()
+	cleanup_owme()
 }
 
 //-----------------------------------------------------------------------------
@@ -274,7 +274,7 @@ test_chord_5 :: proc(t: ^testing.T) {
 
 @(test)
 test_scale_1 :: proc(t: ^testing.T) {
-	init_WME()
+	init_owme()
 	scale := scale("C", 4, "ionian")
 	testing.expectf(t, scale[0] == 60, "Scale note 0 should be 60, not %d", scale[0])
 	testing.expectf(t, scale[1] == 62, "Scale note 1 should be 62, not %d", scale[1])
@@ -285,12 +285,12 @@ test_scale_1 :: proc(t: ^testing.T) {
 	testing.expectf(t, scale[6] == 71, "Scale note 6 should be 71, not %d", scale[6])
 	testing.expectf(t, scale[7] == 72, "Scale note 7 should be 72, not %d", scale[7])
 	delete(scale)
-	cleanup_WME()
+	cleanup_owme()
 }
 
 @(test)
 test_scale_2 :: proc(t: ^testing.T) {
-	init_WME()
+	init_owme()
 	scale := scale("D", 4, "dorian")
 	testing.expectf(t, scale[0] == 62, "Scale note 0 should be 62, not %d", scale[0])
 	testing.expectf(t, scale[1] == 64, "Scale note 1 should be 64, not %d", scale[1])
@@ -301,12 +301,12 @@ test_scale_2 :: proc(t: ^testing.T) {
 	testing.expectf(t, scale[6] == 72, "Scale note 6 should be 72, not %d", scale[6])
 	testing.expectf(t, scale[7] == 74, "Scale note 7 should be 74, not %d", scale[7])
 	delete(scale)
-	cleanup_WME()
+	cleanup_owme()
 }
 
 @(test)
 test_scale_3 :: proc(t: ^testing.T) {
-	init_WME()
+	init_owme()
 	scale := scale("E", 4, "phrygian")
 	testing.expectf(t, scale[0] == 64, "Scale note 0 should be 64, not %d", scale[0])
 	testing.expectf(t, scale[1] == 65, "Scale note 1 should be 65, not %d", scale[1])
@@ -317,7 +317,7 @@ test_scale_3 :: proc(t: ^testing.T) {
 	testing.expectf(t, scale[6] == 74, "Scale note 6 should be 74, not %d", scale[6])
 	testing.expectf(t, scale[7] == 76, "Scale note 7 should be 76, not %d", scale[7])
 	delete(scale)
-	cleanup_WME()
+	cleanup_owme()
 }
 
 @(test)
@@ -343,7 +343,7 @@ test_string_from_note_3 :: proc(t: ^testing.T) {
 
 @(test)
 test_notes_from_chord_1 :: proc(t: ^testing.T) {
-	init_WME()
+	init_owme()
 	chord := chord("C", 4, "major")
 	notes, _ := notes(chord)
 	testing.expectf(t, len(notes) == 3, "There should be 3 notes in the chord, not %d", len(notes))
@@ -352,12 +352,12 @@ test_notes_from_chord_1 :: proc(t: ^testing.T) {
 	testing.expectf(t, notes[2].name == "G", "Third note should be G, not %s", notes[2].name)
 	delete(chord)
 	delete(notes)
-	cleanup_WME()
+	cleanup_owme()
 }
 
 @(test)
 test_notes_from_chord_2 :: proc(t: ^testing.T) {
-	init_WME()
+	init_owme()
 	chord := chord("D", 4, "major")
 	notes, _ := notes(chord)
 	testing.expectf(t, len(notes) == 3, "There should be 3 notes in the chord, not %d", len(notes))
@@ -366,13 +366,13 @@ test_notes_from_chord_2 :: proc(t: ^testing.T) {
 	testing.expectf(t, notes[2].name == "A", "Third note should be A, not %s", notes[2].name)
 	delete(chord)
 	delete(notes)
-	cleanup_WME()
+	cleanup_owme()
 }
 
 
 @(test)
 test_notes_from_scale_1 :: proc(t: ^testing.T) {
-	init_WME()
+	init_owme()
 	scale := scale("C#", 4, "mixolydian")
 	notes, _ := notes(scale)
 	testing.expectf(t, len(notes) == 8, "There should be 8 notes in the scale, not %d", len(notes))
@@ -386,12 +386,12 @@ test_notes_from_scale_1 :: proc(t: ^testing.T) {
 	testing.expectf(t, notes[7].mnn == 73, "Eighth note should be 73, not %i", notes[7].mnn)
 	delete(scale)
 	delete(notes)
-	cleanup_WME()
+	cleanup_owme()
 }
 
 @(test)
 test_c_ionian_fingering :: proc(t: ^testing.T) {
-	init_WME()
+	init_owme()
 	scale := scale("C", 3, "ionian")
 	guitar_standard := tuning("guitarStandard")
 	fingering := fingering(guitar_standard, scale)
@@ -402,7 +402,7 @@ test_c_ionian_fingering :: proc(t: ^testing.T) {
 	testing.expectf(t, fingering[5][13] == 53, "Note should be 53, not %i", fingering[5][13])
 	delete(scale)
 	cleanup_fingering(fingering)
-	cleanup_WME()
+	cleanup_owme()
 }
 
 
