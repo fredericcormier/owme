@@ -93,15 +93,15 @@ from either a note name and octave, a midi note number, or a frequency
 
 */
 note :: proc {
-	note_from_notename_and_octave,
-	note_from_midi_note_number,
-	note_from_frequency,
+	_note_from_notename_and_octave,
+	_note_from_midi_note_number,
+	_note_from_frequency,
 }
 
 @(private = "file")
-note_from_notename_and_octave :: proc(n: string, o: i8) -> (note: Note, ok: bool) #optional_ok {
-	if mnn, ok := midi_note_number_from_notename_and_octave(n, o); ok {
-		if freq, ok2 := frequency_from_midi_note_number(mnn); ok2 {
+_note_from_notename_and_octave :: proc(n: string, o: i8) -> (note: Note, ok: bool) #optional_ok {
+	if mnn, ok := _midi_note_number_from_notename_and_octave(n, o); ok {
+		if freq, ok2 := _frequency_from_midi_note_number(mnn); ok2 {
 			return Note{n, o, mnn, freq}, true
 		}
 	}
@@ -109,9 +109,9 @@ note_from_notename_and_octave :: proc(n: string, o: i8) -> (note: Note, ok: bool
 }
 
 @(private = "file")
-note_from_midi_note_number :: proc(mnn: i8) -> (note: Note, ok: bool) #optional_ok {
-	if n, o, ok := notename_and_octave_from_mnn(mnn); ok {
-		if freq, ok2 := frequency_from_midi_note_number(mnn); ok2 {
+_note_from_midi_note_number :: proc(mnn: i8) -> (note: Note, ok: bool) #optional_ok {
+	if n, o, ok := _notename_and_octave_from_mnn(mnn); ok {
+		if freq, ok2 := _frequency_from_midi_note_number(mnn); ok2 {
 			return Note{n, o, mnn, freq}, true
 		}
 	}
@@ -119,9 +119,9 @@ note_from_midi_note_number :: proc(mnn: i8) -> (note: Note, ok: bool) #optional_
 }
 
 @(private = "file")
-note_from_frequency :: proc(freq: f32) -> (note: Note, ok: bool) #optional_ok {
-	if n, o, ok := notename_and_octave_from_frequency(freq); ok {
-		if mnn, ok2 := midi_note_number_from_notename_and_octave(n, o); ok2 {
+_note_from_frequency :: proc(freq: f32) -> (note: Note, ok: bool) #optional_ok {
+	if n, o, ok := _notename_and_octave_from_frequency(freq); ok {
+		if mnn, ok2 := _midi_note_number_from_notename_and_octave(n, o); ok2 {
 			return Note{n, o, mnn, freq}, true
 		}
 	}
@@ -147,15 +147,15 @@ allocator
 
 */
 notes :: proc {
-	notes_from_collection,
+	_notes_from_collection,
 }
 
 @(private = "file")
-notes_from_collection :: proc(collection: NoteCollection, allocator := context.allocator) -> ([]Note, bool) {
+_notes_from_collection :: proc(collection: NoteCollection, allocator := context.allocator) -> ([]Note, bool) {
 	notes := make([]Note, len(collection), allocator)
 	for mnn, i in collection {
-		if n, o, ok := notename_and_octave_from_mnn(mnn); ok {
-			if freq, ok2 := frequency_from_midi_note_number(mnn); ok2 {
+		if n, o, ok := _notename_and_octave_from_mnn(mnn); ok {
+			if freq, ok2 := _frequency_from_midi_note_number(mnn); ok2 {
 				notes[i] = {n, o, mnn, freq}
 			}
 		}
@@ -184,12 +184,12 @@ or
 
 */
 notename_and_octave :: proc {
-	notename_and_octave_from_mnn,
-	notename_and_octave_from_frequency,
+	_notename_and_octave_from_mnn,
+	_notename_and_octave_from_frequency,
 }
 
 @(private = "file")
-notename_and_octave_from_mnn :: proc(mnn: i8) -> (n: string, o: i8, ok: bool) {
+_notename_and_octave_from_mnn :: proc(mnn: i8) -> (n: string, o: i8, ok: bool) {
 	if mnn >= 0 && mnn <= 127 {
 		n := NOTE_NAMES[mnn % 12]
 		o := mnn / 12 - 1
@@ -201,10 +201,10 @@ notename_and_octave_from_mnn :: proc(mnn: i8) -> (n: string, o: i8, ok: bool) {
 
 // this returns the name and octave of the "closest" note for the frequency
 @(private = "file")
-notename_and_octave_from_frequency :: proc(freq: f32) -> (n: string, o: i8, ok: bool) {
+_notename_and_octave_from_frequency :: proc(freq: f32) -> (n: string, o: i8, ok: bool) {
 	if freq > 0 {
 		mnn := cast(i8)(math.round_f32(12 * math.log2_f32(freq / A440_FREQUENCY) + A440_MIDI_NOTE_NUMBER))
-		return notename_and_octave_from_mnn(mnn)
+		return _notename_and_octave_from_mnn(mnn)
 	} else {
 		return "", 0, false
 	}
@@ -224,12 +224,12 @@ usage:
 
 */
 midi_note_number :: proc {
-	midi_note_number_from_notename_and_octave,
-	midi_note_number_from_frequency,
+	_midi_note_number_from_notename_and_octave,
+	_midi_note_number_from_frequency,
 }
 
 @(private = "file")
-midi_note_number_from_notename_and_octave :: proc(n: string, o: i8) -> (mnn: i8, ok: bool) #optional_ok {
+_midi_note_number_from_notename_and_octave :: proc(n: string, o: i8) -> (mnn: i8, ok: bool) #optional_ok {
 	n := strings.to_upper(n)
 	defer (delete(n))
 	for note_name, i in NOTE_NAMES {
@@ -242,9 +242,9 @@ midi_note_number_from_notename_and_octave :: proc(n: string, o: i8) -> (mnn: i8,
 }
 
 @(private = "file")
-midi_note_number_from_frequency :: proc(freq: f32) -> (mnn: i8, ok: bool) #optional_ok {
-	if n, o, ok := notename_and_octave_from_frequency(freq); ok {
-		return midi_note_number_from_notename_and_octave(n, o)
+_midi_note_number_from_frequency :: proc(freq: f32) -> (mnn: i8, ok: bool) #optional_ok {
+	if n, o, ok := _notename_and_octave_from_frequency(freq); ok {
+		return _midi_note_number_from_notename_and_octave(n, o)
 	} else {
 		return 0, false
 	}
@@ -262,12 +262,12 @@ usage:
 
 */
 frequency :: proc {
-	frequency_from_midi_note_number,
-	frequency_from_notename_and_octave,
+	_frequency_from_midi_note_number,
+	_frequency_from_notename_and_octave,
 }
 
 @(private = "file")
-frequency_from_midi_note_number :: proc(mnn: i8) -> (frequency: f32, ok: bool) #optional_ok {
+_frequency_from_midi_note_number :: proc(mnn: i8) -> (frequency: f32, ok: bool) #optional_ok {
 	if mnn >= 0 && mnn <= 127 {
 		frequency = math.pow_f32(2, f32(mnn - A440_MIDI_NOTE_NUMBER) / f32(12)) * A440_FREQUENCY
 		return frequency, true
@@ -277,9 +277,9 @@ frequency_from_midi_note_number :: proc(mnn: i8) -> (frequency: f32, ok: bool) #
 }
 
 @(private = "file")
-frequency_from_notename_and_octave :: proc(n: string, o: i8) -> (frequency: f32, ok: bool) #optional_ok {
-	if mnn, ok := midi_note_number_from_notename_and_octave(n, o); ok {
-		return frequency_from_midi_note_number(mnn)
+_frequency_from_notename_and_octave :: proc(n: string, o: i8) -> (frequency: f32, ok: bool) #optional_ok {
+	if mnn, ok := _midi_note_number_from_notename_and_octave(n, o); ok {
+		return _frequency_from_midi_note_number(mnn)
 	} else {
 		return
 	}
@@ -297,11 +297,11 @@ usage:
 `	 chord, ok := chord("C", 4, .major)`
 */
 chord :: proc {
-	chord_from_notename_octave_and_chordname,
+	_chord_from_notename_octave_and_chordname,
 }
 
 @(private = "file")
-chord_from_notename_octave_and_chordname :: proc(
+_chord_from_notename_octave_and_chordname :: proc(
 	n: string,
 	o: i8,
 	c: string,
@@ -310,7 +310,7 @@ chord_from_notename_octave_and_chordname :: proc(
 	chord: NoteCollection,
 	ok: bool,
 ) #optional_ok {
-	chord, ok = collection_from_notename_octave_and_formula(n, o, g_chord_formulas[c], allocator);if !ok {
+	chord, ok = _collection_from_notename_octave_and_formula(n, o, g_chord_formulas[c], allocator);if !ok {
 		return nil, false
 	}
 	return chord, true
@@ -330,11 +330,11 @@ usage:
 
 */
 scale :: proc {
-	scale_from_notename_octave_and_scalename,
+	_scale_from_notename_octave_and_scalename,
 }
 
 @(private = "file")
-scale_from_notename_octave_and_scalename :: proc(
+_scale_from_notename_octave_and_scalename :: proc(
 	n: string,
 	o: i8,
 	s: string,
@@ -343,7 +343,7 @@ scale_from_notename_octave_and_scalename :: proc(
 	scale: NoteCollection,
 	ok: bool,
 ) #optional_ok {
-	scale, ok = collection_from_notename_octave_and_formula(n, o, g_scale_formulas[s], allocator);if !ok {
+	scale, ok = _collection_from_notename_octave_and_formula(n, o, g_scale_formulas[s], allocator);if !ok {
 		return nil, false
 	}
 	return scale, true
@@ -351,7 +351,7 @@ scale_from_notename_octave_and_scalename :: proc(
 
 
 @(private = "file")
-collection_from_notename_octave_and_formula :: proc(
+_collection_from_notename_octave_and_formula :: proc(
 	n: string,
 	o: i8,
 	f: Formula,
@@ -361,7 +361,7 @@ collection_from_notename_octave_and_formula :: proc(
 	ok: bool,
 ) #optional_ok {
 	mnn: i8
-	mnn, ok = midi_note_number_from_notename_and_octave(n, o);if !ok {
+	mnn, ok = _midi_note_number_from_notename_and_octave(n, o);if !ok {
 		return nil, false
 	}
 	chord, err := make(NoteCollection, len(f), allocator);if err != .None {
@@ -375,7 +375,125 @@ collection_from_notename_octave_and_formula :: proc(
 
 }
 
-//-----------------------------------------------------------------------------
+/*
+
+INTERVALS
+
+*/
+
+Intervals :: enum {
+	unison,
+	minorSecond,
+	majorSecond,
+	minorThird,
+	majorThird,
+	perfectFourth,
+	diminishedFith,
+	perfectFith,
+	augmentedFith,
+	perfectSixth,
+	minorSeventh,
+	majorSeventh,
+	octave,
+	minorNinth,
+	majorNinth,
+	augmentedNinth,
+	tenth,
+	eleventh,
+	augmentedEleventh,
+	twelfth,
+	minorThirteenth,
+	majorThirteenth,
+	minorFourteenth,
+	majorFourteenth,
+	doubleOctave,
+}
+
+
+@(private = "file")
+g_interval_names := [Intervals]string {
+	.unison            = "Unison",
+	.minorSecond       = "Minor Second",
+	.majorSecond       = "Major Second",
+	.minorThird        = "Minor Third",
+	.majorThird        = "Major Third",
+	.perfectFourth     = "Perfect Fourth",
+	.diminishedFith    = "Diminished Fifth",
+	.perfectFith       = "Perfect Fifth",
+	.augmentedFith     = "Augmented Fifth",
+	.perfectSixth      = "Perfect Sixth",
+	.minorSeventh      = "Minor Seventh",
+	.majorSeventh      = "Major Seventh",
+	.octave            = "Octave",
+	.minorNinth        = "Minor Ninth",
+	.majorNinth        = "Major Ninth",
+	.augmentedNinth    = "augmented Ninth",
+	.tenth             = "Tenth",
+	.eleventh          = "Eleventh",
+	.augmentedEleventh = "Augmented Eleventh",
+	.twelfth           = "Twelfth",
+	.minorThirteenth   = "Minor Thirteenth",
+	.majorThirteenth   = "Major Thirteenth",
+	.minorFourteenth   = "Minor Fourteenth",
+	.majorFourteenth   = "Major Fourteenth",
+	.doubleOctave      = "Double Octave",
+}
+
+/*
+
+Returns the numbers of semitones and an optional boolean indicating success (or not)
+from either 2 notes or 2 MIDI Note Numbers (mnn)
+
+
+usage:
+
+	n1 := Note {mnn = 66}
+	n2 := Note {mnn = 70}
+
+	intvl, ok := interval_between(n1, n2)
+	intvl, ok := interval_between(66, 73)
+`
+
+*/
+
+interval_between :: proc {
+	_interval_between_notes,
+	_interval_between_mnn,
+}
+
+@(private = "file")
+_interval_between_notes :: proc(n1: Note, n2: Note) -> (interval: i8, ok: bool) #optional_ok {
+	if (n1.mnn >= 0 && n1.mnn <= 127) && (n2.mnn >= 0 && n2.mnn <= 127) {
+		return n2.mnn - n1.mnn, true
+	} else {
+		log.warn("Invalid note numbers")
+	}
+	return 0, false
+}
+
+@(private = "file")
+_interval_between_mnn :: proc(n1: i8, n2: i8) -> (interval: i8, ok: bool) #optional_ok {
+	if (n1 >= 0 && n1 <= 127) && (n2 >= 0 && n2 <= 127) {
+		return n2 - n1, true
+	} else {
+		log.warn("Invalid note numbers")
+	}
+	return 0, false
+}
+
+
+interval_name :: proc(interval: i8) -> string {
+	if (interval >= 0 && interval <= 24) {
+		return g_interval_names[cast(Intervals)interval]
+	} else {
+		remainder := interval %% 24
+		return g_interval_names[cast(Intervals)remainder]
+	}
+	return "Not a valid interval"
+}
+
+//----------------------------------------------------------------------------
+//
 //		Helpers
 
 round_to :: proc(x: f32, places: i8) -> f32 {
@@ -397,7 +515,7 @@ default path for json files is "data/"
 
 */
 init_notes_from_json :: proc(scale_path := "data/scales.json", chord_path := "data/chords.json") -> bool {
-	ok_scales := load_formulas_from_json(&g_scale_formulas, scale_path)
+	ok_scales := _load_formulas_from_json(&g_scale_formulas, scale_path)
 	if ok_scales {
 		log.info("Scales loaded from JSON")
 		//keep going
@@ -406,7 +524,7 @@ init_notes_from_json :: proc(scale_path := "data/scales.json", chord_path := "da
 		return false
 	}
 
-	ok_chords := load_formulas_from_json(&g_chord_formulas, chord_path)
+	ok_chords := _load_formulas_from_json(&g_chord_formulas, chord_path)
 	if ok_chords {
 		log.info("Chords loaded from JSON")
 		return true
@@ -437,7 +555,7 @@ cleanup_notes :: proc() {
 
 
 @(private = "file")
-load_formulas_from_json :: proc(formula: ^map[string]Formula, path: string) -> (ok: bool) {
+_load_formulas_from_json :: proc(formula: ^map[string]Formula, path: string) -> (ok: bool) {
 	data, rerr := os.read_entire_file_or_err(path)
 	if rerr != nil {
 		log.warnf("Unable to read file: %v", rerr)
