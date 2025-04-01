@@ -26,6 +26,10 @@ A440_MIDI_NOTE_NUMBER :: 69
 
 NOTE_NAMES: [12]string = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"}
 
+CHROMATIC_SCALE_LENGTH: i8 : 12
+DOUBLE_OCTAVE_SCALE_LENGTH: i8 : CHROMATIC_SCALE_LENGTH * 2
+
+
 /* The Note type represents a musical note
 
 - name is the note name - e.g. `C, D#, F#`
@@ -380,8 +384,7 @@ _collection_from_notename_octave_and_formula :: proc(
 INTERVALS
 
 */
-
-Intervals :: enum {
+IntervalNames :: enum {
 	unison,
 	minorSecond,
 	majorSecond,
@@ -409,35 +412,46 @@ Intervals :: enum {
 	doubleOctave,
 }
 
+Interval :: struct {
+	name_1: string,
+	name_2: string,
+}
+
+IntervalNameType :: enum {
+	minorMajorName,
+	augmentedDiminishedName,
+}
+
 
 @(private = "file")
-g_interval_names := [Intervals]string {
-	.unison            = "Unison",
-	.minorSecond       = "Minor Second",
-	.majorSecond       = "Major Second",
-	.minorThird        = "Minor Third",
-	.majorThird        = "Major Third",
-	.perfectFourth     = "Perfect Fourth",
-	.diminishedFith    = "Diminished Fifth",
-	.perfectFith       = "Perfect Fifth",
-	.augmentedFith     = "Augmented Fifth",
-	.perfectSixth      = "Perfect Sixth",
-	.minorSeventh      = "Minor Seventh",
-	.majorSeventh      = "Major Seventh",
-	.octave            = "Octave",
-	.minorNinth        = "Minor Ninth",
-	.majorNinth        = "Major Ninth",
-	.augmentedNinth    = "augmented Ninth",
-	.tenth             = "Tenth",
-	.eleventh          = "Eleventh",
-	.augmentedEleventh = "Augmented Eleventh",
-	.twelfth           = "Twelfth",
-	.minorThirteenth   = "Minor Thirteenth",
-	.majorThirteenth   = "Major Thirteenth",
-	.minorFourteenth   = "Minor Fourteenth",
-	.majorFourteenth   = "Major Fourteenth",
-	.doubleOctave      = "Double Octave",
+g_interval_names: [25]Interval = {
+	{"Unison", "Diminished 2nd"},
+	{"Minor 2nd", "Augmented Unison"},
+	{"Major 2nd", "Diminished 3rd"},
+	{"Minor 3rd", "Augmented 2nd"},
+	{"Major 3rd", "Diminished 4th"},
+	{"Perfect 4th", "Augmented 3rd"},
+	{"Diminished 5th", "Augmented 4th"},
+	{"Perfect 5th", "Diminished 6th"},
+	{"Minor 6th", "Augmented 5th"},
+	{"Major 6th", "Diminished 7th"},
+	{"Minor 7th", "Augmented 6th"},
+	{"Major 7th", "Diminished Octave"},
+	{"Octave", "Augmented 7th"},
+	{"Minor 9th", "Augmented Octave"},
+	{"Major 9th", "Diminished 10th"},
+	{"Minor 10th", "Augmented 9th"},
+	{"Major 10th", "Diminished 11th"},
+	{"Perfect 11th", "Aujgmented 10th"},
+	{"Diminished 12th", "Augmented 11th"},
+	{"Perfect 12th", "Diminished 13th"},
+	{"Minor 13th", "Augmented 12th"},
+	{"Major 13th", "Diminished 14th"},
+	{"Minor 14th", "Augmented 13th"},
+	{"Major 14th", "Diminished 15th"},
+	{"Double Octave", "Augmented 14th"},
 }
+
 
 /*
 
@@ -446,6 +460,7 @@ from either 2 notes or 2 MIDI Note Numbers (mnn)
 
 
 usage:
+
 
 	n1 := Note {mnn = 66}
 	n2 := Note {mnn = 70}
@@ -481,16 +496,36 @@ _interval_between_mnn :: proc(n1: i8, n2: i8) -> (interval: i8, ok: bool) #optio
 	return 0, false
 }
 
+/*
 
-interval_name :: proc(interval: i8) -> string {
+Interval names are defined for the first 24 semitones.
+	Up to 24, interval_name returns "O" octave and the interval name corresponding to the given interval integer.
+	ie:
+	`	o, s := interval_name(17) => O octaves, Perfect 11th`
+
+
+	Past 24 (or Double octave) the proc returns the number of octaves and the interval name
+	ie:
+`	`	o, s := interval_name(27) => 2 octaves and a Major Third`
+
+
+*/
+
+interval_name :: proc(interval: i8, name_type: IntervalNameType = .minorMajorName) -> (number_of_octaves: i8, name: string) {
 	if (interval >= 0 && interval <= 24) {
-		return g_interval_names[cast(Intervals)interval]
+		return 0, g_interval_names[interval].name_1
 	} else {
-		remainder := interval %% 24
-		return g_interval_names[cast(Intervals)remainder]
+		octaves := interval / CHROMATIC_SCALE_LENGTH
+		remainder := interval %% DOUBLE_OCTAVE_SCALE_LENGTH
+		return octaves, g_interval_names[remainder].name_1
 	}
-	return "Not a valid interval"
+	return 0, "Not a valid interval"
 }
+
+note_at_interval :: proc(n: u8, i: u8) -> u8 {
+	return 0
+}
+
 
 //----------------------------------------------------------------------------
 //
@@ -650,6 +685,7 @@ init_tunings_from_json :: proc(path := "data/tunings.json") -> (ok: bool) {
 	}
 	return true
 }
+
 
 cleanup_tunings :: proc() {
 	log.info("Cleaning up tunings")
