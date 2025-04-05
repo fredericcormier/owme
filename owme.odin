@@ -39,7 +39,7 @@ DOUBLE_OCTAVE_SCALE_LENGTH: i8 : CHROMATIC_SCALE_LENGTH * 2
 
 the range of MIDI note numbers is 0 to 127
 
-* from `{"C", -1, 0@, 8.175798}`  to `	{"G", 9, 127, 12543.855}`
+* from `{"C", -1, 0, 8.175798}`  to `	{"G", 9, 127, 12543.855}`
 
 */
 Note :: struct {
@@ -424,32 +424,32 @@ IntervalNameType :: enum {
 
 
 @(private = "file")
-g_interval_names: [25]Interval = {
-	{"Unison", "Diminished 2nd"},
-	{"Minor 2nd", "Augmented Unison"},
-	{"Major 2nd", "Diminished 3rd"},
-	{"Minor 3rd", "Augmented 2nd"},
-	{"Major 3rd", "Diminished 4th"},
-	{"Perfect 4th", "Augmented 3rd"},
-	{"Diminished 5th", "Augmented 4th"},
-	{"Perfect 5th", "Diminished 6th"},
-	{"Minor 6th", "Augmented 5th"},
-	{"Major 6th", "Diminished 7th"},
-	{"Minor 7th", "Augmented 6th"},
-	{"Major 7th", "Diminished Octave"},
-	{"Octave", "Augmented 7th"},
-	{"Minor 9th", "Augmented Octave"},
-	{"Major 9th", "Diminished 10th"},
-	{"Minor 10th", "Augmented 9th"},
-	{"Major 10th", "Diminished 11th"},
-	{"Perfect 11th", "Aujgmented 10th"},
-	{"Diminished 12th", "Augmented 11th"},
-	{"Perfect 12th", "Diminished 13th"},
-	{"Minor 13th", "Augmented 12th"},
-	{"Major 13th", "Diminished 14th"},
-	{"Minor 14th", "Augmented 13th"},
-	{"Major 14th", "Diminished 15th"},
-	{"Double Octave", "Augmented 14th"},
+g_interval_names: [25][IntervalNameType]string = {
+	{.minorMajorName = "Unison", .augmentedDiminishedName = "Diminished 2nd"},
+	{.minorMajorName = "Minor 2nd", .augmentedDiminishedName = "Augmented Unison"},
+	{.minorMajorName = "Major 2nd", .augmentedDiminishedName = "Diminished 3rd"},
+	{.minorMajorName = "Minor 3rd", .augmentedDiminishedName = "Augmented 2nd"},
+	{.minorMajorName = "Major 3rd", .augmentedDiminishedName = "Diminished 4th"},
+	{.minorMajorName = "Perfect 4th", .augmentedDiminishedName = "Augmented 3rd"},
+	{.minorMajorName = "Diminished 5th", .augmentedDiminishedName = "Augmented 4th"},
+	{.minorMajorName = "Perfect 5th", .augmentedDiminishedName = "Diminished 6th"},
+	{.minorMajorName = "Minor 6th", .augmentedDiminishedName = "Augmented 5th"},
+	{.minorMajorName = "Major 6th", .augmentedDiminishedName = "Diminished 7th"},
+	{.minorMajorName = "Minor 7th", .augmentedDiminishedName = "Augmented 6th"},
+	{.minorMajorName = "Major 7th", .augmentedDiminishedName = "Diminished Octave"},
+	{.minorMajorName = "Octave", .augmentedDiminishedName = "Augmented 7th"},
+	{.minorMajorName = "Minor 9th", .augmentedDiminishedName = "Augmented Octave"},
+	{.minorMajorName = "Major 9th", .augmentedDiminishedName = "Diminished 10th"},
+	{.minorMajorName = "Minor 10th", .augmentedDiminishedName = "Augmented 9th"},
+	{.minorMajorName = "Major 10th", .augmentedDiminishedName = "Diminished 11th"},
+	{.minorMajorName = "Perfect 11th", .augmentedDiminishedName = "Aujgmented 10th"},
+	{.minorMajorName = "Diminished 12th", .augmentedDiminishedName = "Augmented 11th"},
+	{.minorMajorName = "Perfect 12th", .augmentedDiminishedName = "Diminished 13th"},
+	{.minorMajorName = "Minor 13th", .augmentedDiminishedName = "Augmented 12th"},
+	{.minorMajorName = "Major 13th", .augmentedDiminishedName = "Diminished 14th"},
+	{.minorMajorName = "Minor 14th", .augmentedDiminishedName = "Augmented 13th"},
+	{.minorMajorName = "Major 14th", .augmentedDiminishedName = "Diminished 15th"},
+	{.minorMajorName = "Double Octave", .augmentedDiminishedName = "Augmented 14th"},
 }
 
 
@@ -498,29 +498,37 @@ _interval_between_mnn :: proc(n1: i8, n2: i8) -> (interval: i8, ok: bool) #optio
 
 /*
 
+Returns the name of the interval, the octave of the interval, and a boolean for success (or not)
+
 Interval names are defined for the first 24 semitones.
-	Up to 24, interval_name returns "O" octave and the interval name corresponding to the given interval integer.
-	ie:
-	`	o, s := interval_name(17) => O octaves, Perfect 11th`
+- Up to 24, interval_name returns "O" octave and the interval name corresponding to the given interval integer
+ie:
 
+`o, s := interval_name(17)` *=> O octaves, Perfect 11th*
 
-	Past 24 (or Double octave) the proc returns the number of octaves and the interval name
-	ie:
-`	`	o, s := interval_name(27) => 2 octaves and a Major Third`
+- Past 24 (or Double octave) the proc returns the number of octaves and the interval name
+ie:
 
+`o, s := interval_name(27)` *=> 2 octaves and a Major Third*
 
+By default, interval_name returns the Major Minor type of the name (if it exists)
+Pass *.augmentedDiminishedName* as name_type to get the alternative name
+
+TODO: Negative intervals
 */
-
-interval_name :: proc(interval: i8, name_type: IntervalNameType = .minorMajorName) -> (number_of_octaves: i8, name: string) {
+interval_name :: proc(interval: i8, name_type: IntervalNameType = .minorMajorName) -> (octaves: i8, name: string, ok: bool) {
 	if (interval >= 0 && interval <= 24) {
-		return 0, g_interval_names[interval].name_1
-	} else {
+		return 0, g_interval_names[interval][name_type], true
+	} else if interval >= 25 && interval <= 127 {
 		octaves := interval / CHROMATIC_SCALE_LENGTH
 		remainder := interval %% DOUBLE_OCTAVE_SCALE_LENGTH
-		return octaves, g_interval_names[remainder].name_1
+		return octaves, g_interval_names[remainder][name_type], true
+	} else {
+		return 0, "Not a valid interval", false
 	}
-	return 0, "Not a valid interval"
+
 }
+
 
 note_at_interval :: proc(n: u8, i: u8) -> u8 {
 	return 0
