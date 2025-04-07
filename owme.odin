@@ -7,6 +7,8 @@ import "core:math"
 import "core:os"
 import "core:strings"
 
+/*TODO add the option to pass file path to init_from_json */
+
 init_owme :: proc() {
 	log.info("Using JSON data")
 	_ = init_notes_from_json()
@@ -42,6 +44,7 @@ the range of MIDI note numbers is 0 to 127
 * from `{"C", -1, 0, 8.175798}`  to `	{"G", 9, 127, 12543.855}`
 
 */
+
 Note :: struct {
 	name:      string,
 	octave:    i8,
@@ -386,30 +389,30 @@ INTERVALS
 */
 IntervalNames :: enum {
 	unison,
-	minorSecond,
-	majorSecond,
-	minorThird,
-	majorThird,
-	perfectFourth,
-	diminishedFith,
-	perfectFith,
-	augmentedFith,
-	perfectSixth,
-	minorSeventh,
-	majorSeventh,
+	minor_2nd,
+	major_2nd,
+	minor_3rd,
+	major_3rd,
+	perfect_4th,
+	diminished_5th,
+	perfect_5th,
+	minor_6th,
+	major_6th,
+	minor_7th,
+	major_7th,
 	octave,
-	minorNinth,
-	majorNinth,
-	augmentedNinth,
-	tenth,
-	eleventh,
-	augmentedEleventh,
-	twelfth,
-	minorThirteenth,
-	majorThirteenth,
-	minorFourteenth,
-	majorFourteenth,
-	doubleOctave,
+	minor_9th,
+	major_9th,
+	minor_10th,
+	major_10th,
+	perfect_11th,
+	diminished_12th,
+	perfect_12th,
+	minor_13th,
+	major_13th,
+	minor_14th,
+	major_14th,
+	double_octave,
 }
 
 Interval :: struct {
@@ -478,12 +481,7 @@ interval_between :: proc {
 
 @(private = "file")
 _interval_between_notes :: proc(n1: Note, n2: Note) -> (interval: i8, ok: bool) #optional_ok {
-	if (n1.mnn >= 0 && n1.mnn <= 127) && (n2.mnn >= 0 && n2.mnn <= 127) {
-		return n2.mnn - n1.mnn, true
-	} else {
-		log.warn("Invalid note numbers")
-	}
-	return 0, false
+	return _interval_between_mnn(n1.mnn, n2.mnn)
 }
 
 @(private = "file")
@@ -501,37 +499,54 @@ _interval_between_mnn :: proc(n1: i8, n2: i8) -> (interval: i8, ok: bool) #optio
 Returns the name of the interval, the octave of the interval, and a boolean for success (or not)
 
 Interval names are defined for the first 24 semitones.
-- Up to 24, interval_name returns "O" octave and the interval name corresponding to the given interval integer
+- Up to 24, interval_name returns "O" octave and the **interval name** corresponding to the given interval integer
 ie:
 
-`o, s := interval_name(17)` *=> O octaves, Perfect 11th*
+`o, s, _ := interval_name(17)` *=> O octaves, Perfect 11th*
 
-- Past 24 (or Double octave) the proc returns the number of octaves and the interval name
+- Past 24 (or Double octave) the proc returns the number of octaves and the **interval name**
 ie:
 
-`o, s := interval_name(27)` *=> 2 octaves and a Major Third*
+`o, s, _ := interval_name(27)` *=> 2 octaves and a Major Third*
 
-By default, interval_name returns the Major Minor type of the name (if it exists)
-Pass *.augmentedDiminishedName* as name_type to get the alternative name
+- For negative intervals or interval inversions, the proc returns the number of (negative)octaves and the **12 first interval names**
+then wraps around the names
+ie:
 
-TODO: Negative intervals
+`o, s, _ := interval_name(-29)` *=> -3 octaves, Perfect 5th*
+
+`o, s, _ := interval_name(-14)` *=> -2 octaves, Minor Seventh*
+
+By default, interval_name returns the Major Minor type of the name (if that exists)
+Pass **.augmentedDiminishedName** as name_type to get the alternative name
+
+
 */
 interval_name :: proc(interval: i8, name_type: IntervalNameType = .minorMajorName) -> (octaves: i8, name: string, ok: bool) {
-	if (interval >= 0 && interval <= 24) {
+	switch interval {
+
+	case 0 ..= 24:
 		return 0, g_interval_names[interval][name_type], true
-	} else if interval >= 25 && interval <= 127 {
+
+	case 25 ..= 127:
 		octaves := interval / CHROMATIC_SCALE_LENGTH
 		remainder := interval %% DOUBLE_OCTAVE_SCALE_LENGTH
 		return octaves, g_interval_names[remainder][name_type], true
-	} else {
+
+	case -127 ..= -1:
+		octaves := -(abs(interval) / CHROMATIC_SCALE_LENGTH) - 1
+		remainder := abs(interval) %% CHROMATIC_SCALE_LENGTH
+		inverted_interval := 12 - remainder
+		return octaves, g_interval_names[inverted_interval][name_type], true
+
+	case:
 		return 0, "Not a valid interval", false
 	}
-
 }
 
 
-note_at_interval :: proc(n: u8, i: u8) -> u8 {
-	return 0
+mnn_at_interval :: proc(note_ref: i8, name: IntervalNames) -> i8 {
+	return note_ref + cast(i8)name
 }
 
 

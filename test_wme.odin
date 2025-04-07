@@ -455,10 +455,10 @@ test_simple_interval_names_2 :: proc(t: ^testing.T) {
 	n2 := Note {
 		mnn = 73,
 	}
-	testing.expectf(t, interval_between(n1, n2) == 7, "Interval between 66 and 73 should be 5, not %i", interval_between(n1, n2))
-	testing.expectf(t, interval_between(66, 73) == 7, "Interval between 66 and 73 should be 5, not %i", interval_between(66, 73))
+	testing.expectf(t, interval_between(n1, n2) == 7, "Interval between 66 and 73 should be 7, not %i", interval_between(n1, n2))
+	testing.expectf(t, interval_between(66, 73) == 7, "Interval between 66 and 73 should be 7, not %i", interval_between(66, 73))
 	o, s, _ := interval_name(7)
-	testing.expectf(t, (o == 0 && s == "Perfect 5th"), "Interval name for a perfect fourth should be Perfect 4th, not %i, %s", interval_name(7))
+	testing.expectf(t, (o == 0 && s == "Perfect 5th"), "Interval name for a Perfect 5th should not be %i, %s", interval_name(7))
 }
 
 @(test)
@@ -472,14 +472,14 @@ test_simple_interval_names_3 :: proc(t: ^testing.T) {
 	testing.expectf(t, interval_between(n1, n2) == 4, "Interval between 66 and 70 should be 4, not %i", interval_between(n1, n2))
 	testing.expectf(t, interval_between(66, 70) == 4, "Interval between 66 and 70 should be 4, not %i", interval_between(66, 70))
 	o, s, _ := interval_name(4)
-	testing.expectf(t, (o == 0 && s == "Major 3rd"), "Interval name for a perfect fourth should be Perfect 4th, not %i, %s", interval_name(4))
+	testing.expectf(t, (o == 0 && s == "Major 3rd"), "Interval name for a Major Third should not be %i, %s", interval_name(4))
 }
 
 
 @(test)
 test_over_thirteenth_intervals_1 :: proc(t: ^testing.T) {
 	o, s, _ := interval_name(14)
-	testing.expectf(t, (o == 0 && s == "Major 9th"), "Interval name for 24 should be Major 9th, not %i, %s", interval_name(14))
+	testing.expectf(t, (o == 0 && s == "Major 9th"), "Interval name for 14 should be Major 9th, not %i, %s", interval_name(14))
 }
 
 @(test)
@@ -493,4 +493,38 @@ test_over_thirteenth_intervals_2 :: proc(t: ^testing.T) {
 test_over_2_octaves_intervals_1 :: proc(t: ^testing.T) {
 	o, s, _ := interval_name(27)
 	testing.expectf(t, (o == 2 && s == "Minor 3rd"), "Interval name for 27 should be 2 octaves and Major 3rd, not %i octaves and %s", interval_name(27))
+}
+
+@(test)
+test_simple_negative_intervals_1 :: proc(t: ^testing.T) {
+	testing.expectf(t, interval_between(73, 66) == -7, "Interval between 66 and 73 should be -7, not %i", interval_between(73, 66))
+}
+
+
+@(test)
+test_negative_intervals_name_1 :: proc(t: ^testing.T) {
+	o, s, _ := interval_name(-5)
+	testing.expectf(t, (o == -1 && s == "Perfect 5th"), "Interval name for -5 st should be octave -1, Perfect Fith, not %i, %s ", interval_name(-5))
+}
+
+@(test)
+test_negative_intervals_name_2 :: proc(t: ^testing.T) {
+	o, s, _ := interval_name(-14)
+	testing.expectf(t, (o == -2 && s == "Minor 7th"), "Interval name for -14 should be octave -2, Minor 7th, not %i, %s ", interval_name(-14))
+}
+
+@(test)
+test_negative_intervals_name_3 :: proc(t: ^testing.T) {
+	o, s, _ := interval_name(-29)
+	testing.expectf(t, (o == -3 && s == "Perfect 5th"), "Interval name for -29 should be octave -2, Perfect 5th, not %i, %s ", interval_name(-29))
+}
+
+@(test)
+test_mnn_at_interval_1 :: proc(t: ^testing.T) {
+	testing.expectf(t, (mnn_at_interval(14, .major_3rd)) == 18, "Major 3rd from mnn 14 should be 18, not %i", mnn_at_interval(14, .major_3rd))
+}
+
+@(test)
+test_mnn_at_interval_2 :: proc(t: ^testing.T) {
+	testing.expectf(t, (mnn_at_interval(27, .major_7th)) == 38, "Major 7th from mnn 14 should be 38, not %i", mnn_at_interval(27, .major_7th))
 }
