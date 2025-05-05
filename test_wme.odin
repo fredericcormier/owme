@@ -394,7 +394,7 @@ test_c_ionian_fingering :: proc(t: ^testing.T) {
 	init_owme()
 	scale := scale("C", 3, "ionian")
 	guitar_standard := tuning("guitarStandard")
-	fingering := fingering(guitar_standard, scale)
+	fingering := fingering(guitar_standard, NoteCollection(scale))
 	testing.expectf(t, fingering[4][3] == 48, "Note should be 48, not %i", fingering[4][3])
 	testing.expectf(t, fingering[3][7] == 57, "Note should be 57, not %i", fingering[3][7])
 	testing.expectf(t, fingering[2][1] == -1, "Note should be -1, not %i", fingering[2][1])

@@ -60,6 +60,12 @@ ie C#4 Mixolydian midi note numbers are `[61, 63, 65, 66, 68, 70, 71, 73]`
 */
 NoteCollection :: distinct []i8
 
+/*On occasion we need to know if a NoteCollection is a Chord*/
+Chord :: distinct NoteCollection
+
+/*On occasion we need to know if a NoteCollection is a Scale*/
+Scale :: distinct NoteCollection
+
 
 /*
  A **Formula** is a collection of interval starting at  0 (for
@@ -71,10 +77,11 @@ Formula :: distinct []i8
 
 
 /*
-container scale of Formulas
+container of scale Formulas
 */
 @(private = "file")
 g_scale_formulas: map[string]Formula
+
 /*
 container of chord Formulas
 */
@@ -154,7 +161,16 @@ allocator
 
 */
 notes :: proc {
-	_notes_from_collection,
+	_notes_from_chord,
+	_notes_from_scale,
+}
+
+_notes_from_chord :: proc(c: Chord, allocator := context.allocator) -> ([]Note, bool) {
+	return _notes_from_collection(cast(NoteCollection)c)
+}
+
+_notes_from_scale :: proc(s: Scale, allocator := context.allocator) -> ([]Note, bool) {
+	return _notes_from_collection(cast(NoteCollection)s)
 }
 
 @(private = "file")
@@ -293,7 +309,7 @@ _frequency_from_notename_and_octave :: proc(n: string, o: i8) -> (frequency: f32
 }
 /*
 
-Returns a collection(array) of MIDI Note numbers representing a chord and a boolean indicating success (or not),
+Returns a Chord collection(array) of MIDI Note numbers representing a chord and a boolean indicating success (or not),
 based on a note name, octave, and chord name
 
 
@@ -308,24 +324,21 @@ chord :: proc {
 }
 
 @(private = "file")
-_chord_from_notename_octave_and_chordname :: proc(
-	n: string,
-	o: i8,
-	c: string,
-	allocator := context.allocator,
-) -> (
-	chord: NoteCollection,
-	ok: bool,
-) #optional_ok {
-	chord, ok = _collection_from_notename_octave_and_formula(n, o, g_chord_formulas[c], allocator);if !ok {
+_chord_from_notename_octave_and_chordname :: proc(n: string, o: i8, c: string, allocator := context.allocator) -> (chord: Chord, ok: bool) #optional_ok {
+	collection, success := _collection_from_notename_octave_and_formula(n, o, g_chord_formulas[c], allocator);if !success {
 		return nil, false
 	}
+	chord = cast(Chord)collection
 	return chord, true
 }
 
+
+inversion :: proc() {
+
+}
 /*
 
-Returns a collection(array) of MIDI Note numbers representing a scale and a boolean indicating success (or not),
+Returns a Scale collection(array) of MIDI Note numbers representing a scale and a boolean indicating success (or not),
 based on a note name, octave, and scale name
 
 
@@ -341,18 +354,11 @@ scale :: proc {
 }
 
 @(private = "file")
-_scale_from_notename_octave_and_scalename :: proc(
-	n: string,
-	o: i8,
-	s: string,
-	allocator := context.allocator,
-) -> (
-	scale: NoteCollection,
-	ok: bool,
-) #optional_ok {
-	scale, ok = _collection_from_notename_octave_and_formula(n, o, g_scale_formulas[s], allocator);if !ok {
+_scale_from_notename_octave_and_scalename :: proc(n: string, o: i8, s: string, allocator := context.allocator) -> (scale: Scale, ok: bool) #optional_ok {
+	collection, success := _collection_from_notename_octave_and_formula(n, o, g_scale_formulas[s], allocator);if !success {
 		return nil, false
 	}
+	scale = cast(Scale)collection
 	return scale, true
 }
 
@@ -371,13 +377,13 @@ _collection_from_notename_octave_and_formula :: proc(
 	mnn, ok = _midi_note_number_from_notename_and_octave(n, o);if !ok {
 		return nil, false
 	}
-	chord, err := make(NoteCollection, len(f), allocator);if err != .None {
+	collection, err := make(NoteCollection, len(f), allocator);if err != .None {
 		return nil, false
 	} else {
 		for interval, i in f {
-			chord[i] = mnn + i8(interval)
+			collection[i] = mnn + i8(interval)
 		}
-		return chord, true
+		return collection, true
 	}
 
 }
