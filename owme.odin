@@ -5,6 +5,7 @@ import "core:fmt"
 import "core:log"
 import "core:math"
 import "core:os"
+import "core:slice"
 import "core:strings"
 
 /*TODO add the option to pass file path to init_from_json */
@@ -333,7 +334,64 @@ _chord_from_notename_octave_and_chordname :: proc(n: string, o: i8, c: string, a
 }
 
 
-inversion :: proc() {
+/*
+
+returns the inversion number of a potentially inverted chord
+
+- 0 is root position
+- 1 is first inversion
+- 2 second inversion
+- etc
+
+*/
+inversion :: proc(chord: Chord) -> i8 {
+
+	lowest_note := chord[0]
+	chord_copy := slice.clone(cast([]i8)chord)
+
+	//sorts a copy of the chord in ascending order
+	slice.sort(chord_copy)
+
+	//returns the index in the sorted array of the lowest note of the chord
+	for n, i in chord_copy {
+		if lowest_note == n {
+			delete(chord_copy)
+			return i8(i)
+		}
+	}
+	delete(chord_copy)
+	return 0
+}
+
+
+/*
+
+Invert the chord in place.
+
+No copy, no memory allocation
+
+*/
+invert_chord :: proc(chord: Chord, inversion: i8) {
+	slice.sort(chord)
+	slice.rotate_left(chord, cast(int)inversion)
+}
+
+
+/*
+
+Returns a new chord that is the inversion of the chord passed in as argument
+
+*Allocates Using Provided Allocator, default allocator: context.allocator*
+
+usage:
+
+`	 inv_chord:= inverted_chord(c1, 2)`
+*/
+inverted_chord :: proc(chord: Chord, inversion: i8, allocator := context.allocator) -> Chord {
+	chord_copy := slice.clone(cast([]i8)chord)
+	slice.sort(chord_copy)
+	slice.rotate_left(chord_copy, cast(int)inversion)
+	return cast(Chord)chord_copy
 
 }
 /*

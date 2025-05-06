@@ -528,3 +528,66 @@ test_mnn_at_interval_1 :: proc(t: ^testing.T) {
 test_mnn_at_interval_2 :: proc(t: ^testing.T) {
 	testing.expectf(t, (mnn_at_interval(27, .major_7th)) == 38, "Major 7th from mnn 14 should be 38, not %i", mnn_at_interval(27, .major_7th))
 }
+
+@(test)
+test_inversion1 :: proc(t: ^testing.T) {
+	c1 := Chord{60, 64, 67}
+	c2 := Chord{64, 67, 60}
+	c3 := Chord{67, 60, 64}
+	testing.expectf(t, inversion(c1) == 0, "c1 is C major in root position ")
+	testing.expectf(t, inversion(c2) == 1, "c2 is C major in first inversion ")
+	testing.expectf(t, inversion(c3) == 2, "c3 is C major in second inversion ")
+}
+
+
+@(test)
+test_inversion_2 :: proc(t: ^testing.T) {
+	c1 := Chord{30, 34, 37, 41, 44, 47, 51}
+	c2 := Chord{41, 44, 47, 51, 30, 34, 37}
+	c3 := Chord{47, 51, 30, 34, 37, 41, 44}
+	testing.expectf(t, inversion(c1) == 0, "c1 is F# 1 Major13 in root position ")
+	testing.expectf(t, inversion(c2) == 3, "c2 is F# 1 Major13 in third inversion ")
+	testing.expectf(t, inversion(c3) == 5, "c3 is F# 1 Major13 in fith inversion ")
+}
+
+
+@(test)
+test_invert_chord :: proc(t: ^testing.T) {
+	f1 := Chord{30, 33, 37, 40}
+	f2 := Chord{37, 40, 30, 33}
+	invert_chord(f1, 2)
+	testing.expectf(t, f1[0] == f2[0], "f1 inverted 2 times shoud be equal to f2")
+	testing.expectf(t, f1[1] == f2[1], "f1 inverted 2 times shoud be equal to f2")
+	testing.expectf(t, f1[2] == f2[2], "f1 inverted 2 times shoud be equal to f2")
+	testing.expectf(t, f1[3] == f2[3], "f1 inverted 2 times shoud be equal to f2")
+	testing.expectf(t, f1[3] == 33, "f1 inverted 2 times shoud be equal to f2")
+}
+
+@(test)
+test_invert_chord2 :: proc(t: ^testing.T) {
+	c1_inv2 := Chord{67, 60, 64}
+	invert_chord(c1_inv2, 0)
+	testing.expectf(t, c1_inv2[0] == 60, "c1_inv2 inverted 0 times shoud be sorted back to root position")
+	testing.expectf(t, c1_inv2[1] == 64, "c1_inv2 inverted 0 times shoud be sorted back to root position")
+	testing.expectf(t, c1_inv2[2] == 67, "c1_inv2 inverted 0 times shoud be sorted back to root position")
+}
+
+
+@(test)
+test_inverted_chord_1 :: proc(t: ^testing.T) {
+	c1 := Chord{30, 34, 37, 41, 44, 47, 51}
+	c5 := Chord{47, 51, 30, 34, 37, 41, 44}
+	testing.expectf(t, inversion(c1) == 0, "c1 is F# 1 Major13 in root position ")
+	testing.expectf(t, inversion(c5) == 5, "c3 is F# 1 Major13 in fith inversion ")
+
+	c1_inv5 := inverted_chord(c1, 5)
+	defer delete(c1_inv5)
+
+	testing.expectf(t, c1_inv5[0] == c5[0], "c1_inv5 should be the 5th inversion of c1 just like c5")
+	testing.expectf(t, c1_inv5[1] == c5[1], "c1_inv5 should be the 5th inversion of c1 just like c5")
+	testing.expectf(t, c1_inv5[2] == c5[2], "c1_inv5 should be the 5th inversion of c1 just like c5")
+	testing.expectf(t, c1_inv5[3] == c5[3], "c1_inv5 should be the 5th inversion of c1 just like c5")
+	testing.expectf(t, c1_inv5[4] == c5[4], "c1_inv5 should be the 5th inversion of c1 just like c5")
+	testing.expectf(t, c1_inv5[5] == c5[5], "c1_inv5 should be the 5th inversion of c1 just like c5")
+	testing.expectf(t, c1_inv5[6] == c5[6], "c1_inv5 should be the 5th inversion of c1 just like c5")
+}
