@@ -837,6 +837,26 @@ tuning_names :: proc(allocator := context.allocator) -> (names: []string) {
 	return t_names[:]
 }
 
+
+/*s
+open_string == no_finger
+*/
+FingerNames :: enum {
+	open_string = 0,
+	indexFinger,
+	middleFinger,
+	ringFinger,
+	pinky,
+}
+
+FrettedNote :: struct {
+	using note:    Note,
+	interval:      IntervalNames,
+	string_number: i8,
+	fret:          i8,
+	finger:        FingerNames,
+}
+
 /*
 
 Fingering is an array of arrays of i8 (MIDI Note numbers).
@@ -853,11 +873,15 @@ Fingering is an array of arrays of i8 (MIDI Note numbers).
 - String 6 --> [-1, -1, -1, -1, -1, -1, -1, -1, 48, -1, 50, -1, 52, 53, -1, 55, -1, 57, -1, 59, 60, -1, -1, -1]
 
 */
-Fingering :: [dynamic][dynamic]i8
+Fingering :: [dynamic][dynamic]FrettedNote
 
 print_ascii_fingering :: proc(f: Fingering) {
-	for n, i in f {
-		fmt.printfln("String %d --> %v", i + 1, n)
+	for string, s in f {
+		fmt.printf("String %d |", s + 1)
+		for note in string {
+			fmt.printf(" - %2d", note.mnn)
+		}
+		fmt.printfln("")
 	}
 }
 
@@ -868,9 +892,9 @@ fingering :: proc(tuning: Tuning, collection: NoteCollection, allocator := conte
 	resize(&result, len(tuning.strings))
 
 	// For each string in the tuning
-	for s, i in tuning.strings {
+	for s, string_index in tuning.strings {
 		// Initialize array for this string
-		result[i] = make([dynamic]i8, allocator)
+		result[string_index] = make([dynamic]FrettedNote, allocator)
 		// Get MIDI note number for the open string
 		open_mnn := midi_note_number(s.open_note_name, s.open_note_octave)
 		// For each fret up to the number of frets on this string
@@ -879,16 +903,24 @@ fingering :: proc(tuning: Tuning, collection: NoteCollection, allocator := conte
 			fret_note := open_mnn + i8(f)
 			// Check if this note is in our collection
 			found := false
-			for note in collection {
+			for note, i in collection {
 				if note == fret_note {
 					found = true
-					append(&result[i], fret_note)
+
+					found_fretted_note := FrettedNote {
+						mnn           = fret_note,
+						interval      = IntervalNames(i),
+						string_number = i8(string_index),
+						fret          = f,
+					}
+
+					append(&result[string_index], found_fretted_note)
 					break
 				}
 			}
 			// return -1 because 0 is a valid note number
 			if !found {
-				append(&result[i], -1)
+				append(&result[string_index], FrettedNote{mnn = -1})
 			}
 		}
 	}
