@@ -414,7 +414,18 @@ scale :: proc {
 
 @(private = "file")
 _scale_from_notename_octave_and_scalename :: proc(n: string, o: i8, s: string, allocator := context.allocator) -> (scale: Scale, ok: bool) #optional_ok {
-	collection, success := _collection_from_notename_octave_and_formula(n, o, g_scale_formulas[s], allocator);if !success {
+	rectified_scale_name: string
+
+	switch s {
+	case "Major", "major":
+		rectified_scale_name = "ionian"
+	case "Minor", "minor":
+		rectified_scale_name = "naturalMinor"
+	case:
+		rectified_scale_name = s
+	}
+
+	collection, success := _collection_from_notename_octave_and_formula(n, o, g_scale_formulas[rectified_scale_name], allocator);if !success {
 		return nil, false
 	}
 	scale = cast(Scale)collection
@@ -439,26 +450,59 @@ _collection_from_notename_octave_and_formula :: proc(n: string, o: i8, f: Formul
 
 }
 
-expand_collection :: proc(note_collection: NoteCollection, upward: bool, downward: bool, allocator := context.allocator) -> (NoteCollection, mem.Allocator_Error) #optional_allocator_error {
-	expanded_collection: [dynamic]i8
-	append_error: mem.Allocator_Error
+print_scale_formulas :: proc() {
+	fmt.printfln("scales: %v", g_scale_formulas)
+}
 
-	if upward {
-		for n in note_collection {
-			for i in 1 ..= 10 {
-				nx := n * i8(i)
-				if nx < 127 {
-					_, append_error = append(&expanded_collection, nx)
+print_chord_formulas :: proc() {
+	fmt.printfln("chords: %v", g_chord_formulas)
+}
+
+print_collection :: proc(collection: NoteCollection) {
+	if collection == nil {
+		fmt.printfln("collection is nil")
+		return
+	}
+	fmt.printfln("collection: %v", collection)
+}
+
+
+expand_collection :: proc(note_collection: NoteCollection, allocator := context.allocator) -> (NoteCollection, mem.Allocator_Error) #optional_allocator_error {
+
+	expanded_collection: [dynamic]i8
+	mem_error: mem.Allocator_Error
+	deduplicated_collection := note_collection[:len(note_collection) - 1] // remove the last element (octave) to avoid duplicates
+
+	expanded_collection, mem_error = make([dynamic]i8, 0, allocator);if mem_error != .None {
+		return nil, mem_error
+	}
+
+	for n in deduplicated_collection {
+		for i in 0 ..= 127 {
+			if i8(i) <= n {
+				// check multiple of 12 for downward expansion
+				if (n - i8(i)) % 12 == 0 {
+					log.infof("expand_collection: downward expansion for %i", i8(i))
+					_, mem_error = append(&expanded_collection, i8(i));if mem_error != .None {
+						return nil, mem_error
+					}
 				}
 			}
+			if i8(i) > n {
+				// check multiple of 12 for upward expansion
+				if (i8(i) - n) % 12 == 0 {
+					_, mem_error = append(&expanded_collection, i8(i));if mem_error != .None {
+						return nil, mem_error
+					}
+				}
+
+			}
 		}
-	};if downward {
-	};if !upward && !downward {
-		log.warn("expand_collection: at least one of upward or downward must be true")
-		return nil, mem.Allocator_Error.Invalid_Argument
 	}
-	return cast(NoteCollection)expanded_collection[:], append_error
+	slice.sort(expanded_collection[:]) // sort the collection
+	return cast(NoteCollection)expanded_collection[:], mem_error
 }
+
 
 /*
 
@@ -731,15 +775,6 @@ export_formulas_to_json :: proc(formula: [$T][]i8, path: string) -> (ok: bool) {
 		return false
 	}
 	return true
-}
-
-
-print_scale_formulas :: proc() {
-	fmt.printfln("scales: %v", g_scale_formulas)
-}
-
-print_chord_formulas :: proc() {
-	fmt.printfln("chords: %v", g_chord_formulas)
 }
 
 
