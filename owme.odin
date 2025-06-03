@@ -4,6 +4,7 @@ import "core:encoding/json"
 import "core:fmt"
 import "core:log"
 import "core:math"
+import "core:mem"
 import "core:os"
 import "core:slice"
 import "core:strings"
@@ -422,15 +423,7 @@ _scale_from_notename_octave_and_scalename :: proc(n: string, o: i8, s: string, a
 
 
 @(private = "file")
-_collection_from_notename_octave_and_formula :: proc(
-	n: string,
-	o: i8,
-	f: Formula,
-	allocator := context.allocator,
-) -> (
-	c: NoteCollection,
-	ok: bool,
-) #optional_ok {
+_collection_from_notename_octave_and_formula :: proc(n: string, o: i8, f: Formula, allocator := context.allocator) -> (c: NoteCollection, ok: bool) #optional_ok {
 	mnn: i8
 	mnn, ok = _midi_note_number_from_notename_and_octave(n, o);if !ok {
 		return nil, false
@@ -446,13 +439,35 @@ _collection_from_notename_octave_and_formula :: proc(
 
 }
 
+expand_collection :: proc(note_collection: NoteCollection, upward: bool, downward: bool, allocator := context.allocator) -> (NoteCollection, mem.Allocator_Error) #optional_allocator_error {
+	expanded_collection: [dynamic]i8
+	append_error: mem.Allocator_Error
+
+	if upward {
+		for n in note_collection {
+			for i in 1 ..= 10 {
+				nx := n * i8(i)
+				if nx < 127 {
+					_, append_error = append(&expanded_collection, nx)
+				}
+			}
+		}
+	};if downward {
+	};if !upward && !downward {
+		log.warn("expand_collection: at least one of upward or downward must be true")
+		return nil, mem.Allocator_Error.Invalid_Argument
+	}
+	return cast(NoteCollection)expanded_collection[:], append_error
+}
+
 /*
 
 INTERVALS
 
 */
 IntervalNames :: enum {
-	unison,
+	unused_interval = -1,
+	unison = 0,
 	minor_2nd,
 	major_2nd,
 	minor_3rd,
@@ -875,21 +890,52 @@ Fingering is an array of arrays of i8 (MIDI Note numbers).
 */
 Fingering :: [dynamic][dynamic]FrettedNote
 
-print_ascii_fingering :: proc(f: Fingering) {
+ShowFingering :: enum {
+	ShowDots,
+	ShowMnn,
+	ShowInterval,
+	ShowStringNumber,
+	ShowFret,
+	ShowFinger,
+}
+
+print_ascii_fingering :: proc(f: Fingering, show: ShowFingering) {
 	for string, s in f {
 		fmt.printf("String %d |", s + 1)
 		for note in string {
-			fmt.printf(" - %2d", note.mnn)
+			switch show {
+			case .ShowDots:
+				_ = note.mnn == -1 ? fmt.printf(" - | ") : fmt.printf(" ◉ | ")
+
+			case .ShowMnn:
+				fmt.printf(" - %2d", note.mnn)
+
+			case .ShowInterval:
+				fmt.printf(" - %2d", note.interval)
+
+			case .ShowStringNumber:
+				fmt.printf(" - %2d", note.string_number)
+
+			case .ShowFret:
+				fmt.printf(" - %2d", note.fret)
+
+			case .ShowFinger:
+				fmt.printf(" - %2d", note.finger)
+
+			}
 		}
 		fmt.printfln("")
 	}
 }
 
 
-fingering :: proc(tuning: Tuning, collection: NoteCollection, allocator := context.allocator) -> Fingering {
+fingering_for_scale :: proc(tuning: Tuning, scale_collection: Scale, allocator := context.allocator) -> (Fingering, mem.Allocator_Error) #optional_allocator_error {
 
-	result := make(Fingering, allocator)
-	resize(&result, len(tuning.strings))
+	result, make_error := make(Fingering, allocator);if make_error == .None {
+		resize(&result, len(tuning.strings))
+	} else {
+		return nil, make_error
+	}
 
 	// For each string in the tuning
 	for s, string_index in tuning.strings {
@@ -902,15 +948,15 @@ fingering :: proc(tuning: Tuning, collection: NoteCollection, allocator := conte
 			// Calculate the note at this fret (open note + fret number)
 			fret_note := open_mnn + i8(f)
 			// Check if this note is in our collection
-			found := false
-			for note, i in collection {
+			match := false
+			for note, i in scale_collection {
 				if note == fret_note {
-					found = true
+					match = true
 
 					found_fretted_note := FrettedNote {
 						mnn           = fret_note,
 						interval      = IntervalNames(i),
-						string_number = i8(string_index),
+						string_number = i8(string_index) + 1,
 						fret          = f,
 					}
 
@@ -918,15 +964,22 @@ fingering :: proc(tuning: Tuning, collection: NoteCollection, allocator := conte
 					break
 				}
 			}
-			// return -1 because 0 is a valid note number
-			if !found {
-				append(&result[string_index], FrettedNote{mnn = -1})
+
+			if !match {
+				not_found_fretted_note := FrettedNote {
+					mnn           = -1,
+					interval      = .unused_interval,
+					string_number = -1,
+					fret          = -1,
+				}
+				_, append_err := append(&result[string_index], not_found_fretted_note);if append_err != .None {
+					return nil, append_err
+				}
 			}
 		}
 	}
-	return result
+	return result, .None
 }
-
 
 cleanup_fingering :: proc(f: Fingering) {
 	for s, i in f {
