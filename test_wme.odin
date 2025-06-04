@@ -591,3 +591,20 @@ test_inverted_chord_1 :: proc(t: ^testing.T) {
 	testing.expectf(t, c1_inv5[5] == c5[5], "c1_inv5 should be the 5th inversion of c1 just like c5")
 	testing.expectf(t, c1_inv5[6] == c5[6], "c1_inv5 should be the 5th inversion of c1 just like c5")
 }
+//  C 4 ionian 60,62,64,65,67,69,71,72
+@(test)
+test_expanded_scale_1 :: proc(t: ^testing.T) {
+
+	init_owme()
+	scale := scale("C", 4, "ionian")
+	expanded_scale := expand_collection(cast(NoteCollection)scale)
+	log.infof("Expanded scale: %v", expanded_scale)
+	testing.expectf(t, collection_contains(expanded_scale, 60),"C Major Collection should contain 60")
+	testing.expectf(t, collection_contains(expanded_scale, 21),"C Major Collection should contain 21")
+	testing.expectf(t, collection_contains(expanded_scale, 125),"C Major Collection should contain 125")
+	testing.expectf(t, !collection_contains(expanded_scale, 126),"C Major Collection should NOT contain 126")
+	testing.expectf(t, !collection_contains(expanded_scale, 58),"C Major Collection should NOT contain 58")
+	delete(scale)
+	delete(expanded_scale)
+	cleanup_owme()
+}

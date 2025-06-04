@@ -414,6 +414,7 @@ scale :: proc {
 
 @(private = "file")
 _scale_from_notename_octave_and_scalename :: proc(n: string, o: i8, s: string, allocator := context.allocator) -> (scale: Scale, ok: bool) #optional_ok {
+
 	rectified_scale_name: string
 
 	switch s {
@@ -468,35 +469,38 @@ print_collection :: proc(collection: NoteCollection) {
 
 
 expand_collection :: proc(note_collection: NoteCollection, allocator := context.allocator) -> (NoteCollection, mem.Allocator_Error) #optional_allocator_error {
-
-	expanded_collection: [dynamic]i8
-	mem_error: mem.Allocator_Error
-	deduplicated_collection := note_collection[:len(note_collection) - 1] // remove the last element (octave) to avoid duplicates
-
-	expanded_collection, mem_error = make([dynamic]i8, 0, allocator);if mem_error != .None {
-		return nil, mem_error
+	if note_collection == nil {
+		log.warn("expand_collection: note_collection is nil")
+		return nil, .None
 	}
 
-	for n in deduplicated_collection {
-		for i in 0 ..= 127 {
-			if i8(i) <= n {
-				// check multiple of 12 for downward expansion
-				if (n - i8(i)) % 12 == 0 {
-					log.infof("expand_collection: downward expansion for %i", i8(i))
-					_, mem_error = append(&expanded_collection, i8(i));if mem_error != .None {
-						return nil, mem_error
-					}
-				}
-			}
-			if i8(i) > n {
-				// check multiple of 12 for upward expansion
-				if (i8(i) - n) % 12 == 0 {
-					_, mem_error = append(&expanded_collection, i8(i));if mem_error != .None {
-						return nil, mem_error
-					}
-				}
+	deduplicated_collection := note_collection[:len(note_collection) - 1] // remove the last element (octave) to avoid duplicates
 
+	expanded_collection, mem_error := make([dynamic]i8, 0, allocator);if mem_error != .None {
+		return nil, mem_error
+	}
+	// expand to lower notes
+	for n in deduplicated_collection {
+		i: i8 = 1
+		log.infof("octaves down of %i", n)
+		for (n - (12 * i)) >= 0 {
+			log.infof("adding %i for note %i", n - (12 * i), n)
+			_, mem_error = append(&expanded_collection, n - (12 * i));if mem_error != .None {
+				return nil, mem_error
 			}
+			i += 1
+		}
+	}
+	//expand to higher notes
+	for n in deduplicated_collection {
+		new_note: i16 = i16(n)
+		log.infof("octaves up of %i", n)
+		for new_note <= 127 {
+			log.infof("adding %i for note %i", new_note, n)
+			_, mem_error = append(&expanded_collection, cast(i8)new_note);if mem_error != .None {
+				return nil, mem_error
+			}
+			new_note += 12
 		}
 	}
 	slice.sort(expanded_collection[:]) // sort the collection
@@ -504,6 +508,17 @@ expand_collection :: proc(note_collection: NoteCollection, allocator := context.
 }
 
 
+collection_contains :: proc(note_collection: NoteCollection, note: i8) -> bool {
+	if note_collection == nil {
+		return false
+	}
+	for n in note_collection {
+		if n == note {
+			return true
+		}
+	}
+	return false
+}
 /*
 
 INTERVALS
