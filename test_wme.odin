@@ -394,7 +394,7 @@ test_c_ionian_fingering :: proc(t: ^testing.T) {
 	init_owme()
 	scale := scale("C", 3, "ionian")
 	guitar_standard := tuning("guitarStandard")
-	fingering := fingering_for_scale(guitar_standard, scale)
+	fingering := fingering(guitar_standard, cast(NoteCollection)scale)
 	testing.expectf(t, fingering[4][3].mnn == 48, "Note should be 48, not %i", fingering[4][3].mnn)
 	testing.expectf(t, fingering[3][7].mnn == 57, "Note should be 57, not %i", fingering[3][7].mnn)
 	testing.expectf(t, fingering[2][1].mnn == -1, "Note should be -1, not %i", fingering[2][1].mnn)
@@ -599,11 +599,40 @@ test_expanded_scale_1 :: proc(t: ^testing.T) {
 	scale := scale("C", 4, "ionian")
 	expanded_scale := expand_collection(cast(NoteCollection)scale)
 	log.infof("Expanded scale: %v", expanded_scale)
-	testing.expectf(t, collection_contains(expanded_scale, 60),"C Major Collection should contain 60")
-	testing.expectf(t, collection_contains(expanded_scale, 21),"C Major Collection should contain 21")
-	testing.expectf(t, collection_contains(expanded_scale, 125),"C Major Collection should contain 125")
-	testing.expectf(t, !collection_contains(expanded_scale, 126),"C Major Collection should NOT contain 126")
-	testing.expectf(t, !collection_contains(expanded_scale, 58),"C Major Collection should NOT contain 58")
+	testing.expectf(t, collection_contains(expanded_scale, 60), "C Major Collection should contain 60")
+	testing.expectf(t, collection_contains(expanded_scale, 21), "C Major Collection should contain 21")
+	testing.expectf(t, collection_contains(expanded_scale, 125), "C Major Collection should contain 125")
+	testing.expectf(t, collection_contains(expanded_scale, 126) == false, "C Major Collection should NOT contain 126")
+	testing.expectf(t, collection_contains(expanded_scale, 58) == false, "C Major Collection should NOT contain 58")
+	delete(scale)
+	delete(expanded_scale)
+	cleanup_owme()
+}
+
+// Fingering for A#2 Lydian Minor
+// String 1 || 64 | 65 | 66 | -- | 68 | -- | 70 | -- | 72 | -- | 74 | -- | 76 | 77 | 78 | -- | 80 | -- | 82 | -- | 84 | -- | 86 | --
+// String 2 || -- | 60 | -- | 62 | -- | 64 | 65 | 66 | -- | 68 | -- | 70 | -- | 72 | -- | 74 | -- | 76 | 77 | 78 | -- | 80 | -- | 82
+// String 3 || -- | 56 | -- | 58 | -- | 60 | -- | 62 | -- | 64 | 65 | 66 | -- | 68 | -- | 70 | -- | 72 | -- | 74 | -- | 76 | 77 | 78
+// String 4 || 50 | -- | 52 | 53 | 54 | -- | 56 | -- | 58 | -- | 60 | -- | 62 | -- | 64 | 65 | 66 | -- | 68 | -- | 70 | -- | 72 | --
+// String 5 || -- | 46 | -- | 48 | -- | 50 | -- | 52 | 53 | 54 | -- | 56 | -- | 58 | -- | 60 | -- | 62 | -- | 64 | 65 | 66 | -- | 68
+// String 6 || 40 | 41 | 42 | -- | 44 | -- | 46 | -- | 48 | -- | 50 | -- | 52 | 53 | 54 | -- | 56 | -- | 58 | -- | 60 | -- | 62 | --
+//
+// collection: [0, 2, 4, 5, 6, 8, 10, 12, 14, 16, 17, 18, 20, 22,
+//  24, 26, 28, 29, 30, 32, 34, 36, 38, 40, 41, 42, 44,
+// 46, 48, 50, 52, 53, 54, 56, 58, 60, 62, 64, 65, 66, 68, 70, 72,
+//  74, 76, 77, 78, 80, 82, 84, 86, 88, 89, 90, 92, 94, 96, 98, 100,
+//  101, 102, 104, 106, 108, 110, 112, 113, 114, 116, 118, 120, 122, 124, 125, 126]
+@(test)
+test_expandedScale_2 :: proc(t: ^testing.T) {
+	init_owme()
+	scale := scale("a#", 2, "lydianMinor")
+	expanded_scale := expand_collection(cast(NoteCollection)scale)
+	log.infof("Expanded scale: %v", expanded_scale)
+	testing.expectf(t, collection_contains(expanded_scale, 65), "A#2 Lydian Minor Collection should contain 65")
+	testing.expectf(t, collection_contains(expanded_scale, 74), "A#2 Lydian Minor Collection should contain 74")
+	testing.expectf(t, collection_contains(expanded_scale, 40), "A#2 Lydian Minor Collection should contain 40")
+	testing.expectf(t, collection_contains(expanded_scale, 123) == false, "A#2 Lydian Minor Collection should NOT contain 123")
+	testing.expectf(t, collection_contains(expanded_scale, 59) == false, "A#2 Lydian Minor Collection should NOT contain 59")
 	delete(scale)
 	delete(expanded_scale)
 	cleanup_owme()

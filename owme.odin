@@ -415,25 +415,25 @@ scale :: proc {
 @(private = "file")
 _scale_from_notename_octave_and_scalename :: proc(n: string, o: i8, s: string, allocator := context.allocator) -> (scale: Scale, ok: bool) #optional_ok {
 
-	rectified_scale_name: string
+	normalized_scale_name: string
 
 	switch s {
 	case "Major", "major":
-		rectified_scale_name = "ionian"
+		normalized_scale_name = "ionian"
 	case "Minor", "minor":
-		rectified_scale_name = "naturalMinor"
+		normalized_scale_name = "naturalMinor"
 	case:
-		rectified_scale_name = s
+		normalized_scale_name = s
 	}
 
-	collection, success := _collection_from_notename_octave_and_formula(n, o, g_scale_formulas[rectified_scale_name], allocator);if !success {
+	collection, success := _collection_from_notename_octave_and_formula(n, o, g_scale_formulas[normalized_scale_name], allocator);if !success {
 		return nil, false
 	}
 	scale = cast(Scale)collection
 	return scale, true
 }
 
-
+//TODO: This should return an allocator error instead of a boolean
 @(private = "file")
 _collection_from_notename_octave_and_formula :: proc(n: string, o: i8, f: Formula, allocator := context.allocator) -> (c: NoteCollection, ok: bool) #optional_ok {
 	mnn: i8
@@ -467,7 +467,11 @@ print_collection :: proc(collection: NoteCollection) {
 	fmt.printfln("collection: %v", collection)
 }
 
+/*
 
+Returns a new collection of MIDI Note numbers representing the expanded collection to all octaves
+
+*/
 expand_collection :: proc(note_collection: NoteCollection, allocator := context.allocator) -> (NoteCollection, mem.Allocator_Error) #optional_allocator_error {
 	if note_collection == nil {
 		log.warn("expand_collection: note_collection is nil")
@@ -482,9 +486,7 @@ expand_collection :: proc(note_collection: NoteCollection, allocator := context.
 	// expand to lower notes
 	for n in deduplicated_collection {
 		i: i8 = 1
-		log.infof("octaves down of %i", n)
 		for (n - (12 * i)) >= 0 {
-			log.infof("adding %i for note %i", n - (12 * i), n)
 			_, mem_error = append(&expanded_collection, n - (12 * i));if mem_error != .None {
 				return nil, mem_error
 			}
@@ -494,9 +496,7 @@ expand_collection :: proc(note_collection: NoteCollection, allocator := context.
 	//expand to higher notes
 	for n in deduplicated_collection {
 		new_note: i16 = i16(n)
-		log.infof("octaves up of %i", n)
 		for new_note <= 127 {
-			log.infof("adding %i for note %i", new_note, n)
 			_, mem_error = append(&expanded_collection, cast(i8)new_note);if mem_error != .None {
 				return nil, mem_error
 			}
@@ -793,6 +793,12 @@ export_formulas_to_json :: proc(formula: [$T][]i8, path: string) -> (ok: bool) {
 }
 
 
+/*
+
+TUNINGS
+
+*/
+
 String_Gauge :: enum {
 	stringGaugeThin = 0,
 	stringGaugeMedium,
@@ -902,16 +908,23 @@ tuning_names :: proc(allocator := context.allocator) -> (names: []string) {
 	return t_names[:]
 }
 
+/*
 
-/*s
-open_string == no_finger
+FINGERINGS
+
+*/
+
+/*
+Muted -> string not played
+open_string ->  string played - no finger
 */
 FingerNames :: enum {
-	open_string = 0,
-	indexFinger,
-	middleFinger,
-	ringFinger,
-	pinky,
+	Muted = -1,
+	OpenString = 0,
+	IndexFinger,
+	MiddleFinger,
+	RingFinger,
+	Pinky,
 }
 
 FrettedNote :: struct {
@@ -921,6 +934,7 @@ FrettedNote :: struct {
 	fret:          i8,
 	finger:        FingerNames,
 }
+
 
 /*
 
@@ -943,6 +957,7 @@ Fingering :: [dynamic][dynamic]FrettedNote
 ShowFingering :: enum {
 	ShowDots,
 	ShowMnn,
+	ShowNoteName,
 	ShowInterval,
 	ShowStringNumber,
 	ShowFret,
@@ -958,8 +973,20 @@ print_ascii_fingering :: proc(f: Fingering, show: ShowFingering) {
 				_ = note.mnn == -1 ? fmt.printf(" - | ") : fmt.printf(" ◉ | ")
 
 			case .ShowMnn:
-				fmt.printf(" - %2d", note.mnn)
-
+				if note.mnn == -1 {
+					fmt.printf("| -- ")
+				} else {
+					fmt.printf("| %2d ", note.mnn)
+				}
+			case .ShowNoteName:
+				if note.mnn == -1 {
+					fmt.printf("| --- ")
+				} else {
+					n, o, ok := _notename_and_octave_from_mnn(note.mnn)
+					if ok {
+						fmt.printf("| %4s", n)
+					}
+				}
 			case .ShowInterval:
 				fmt.printf(" - %2d", note.interval)
 
@@ -979,7 +1006,12 @@ print_ascii_fingering :: proc(f: Fingering, show: ShowFingering) {
 }
 
 
-fingering_for_scale :: proc(tuning: Tuning, scale_collection: Scale, allocator := context.allocator) -> (Fingering, mem.Allocator_Error) #optional_allocator_error {
+/*
+
+Returns a Fingering array containing all possible note positions for the given tuning and scale or chord collection.
+
+*/
+fingering :: proc(tuning: Tuning, note_collection: NoteCollection, allocator := context.allocator) -> (Fingering, mem.Allocator_Error) #optional_allocator_error {
 
 	result, make_error := make(Fingering, allocator);if make_error == .None {
 		resize(&result, len(tuning.strings))
@@ -987,19 +1019,13 @@ fingering_for_scale :: proc(tuning: Tuning, scale_collection: Scale, allocator :
 		return nil, make_error
 	}
 
-	// For each string in the tuning
 	for s, string_index in tuning.strings {
-		// Initialize array for this string
 		result[string_index] = make([dynamic]FrettedNote, allocator)
-		// Get MIDI note number for the open string
 		open_mnn := midi_note_number(s.open_note_name, s.open_note_octave)
-		// For each fret up to the number of frets on this string
 		for f in 0 ..< s.number_of_frets {
-			// Calculate the note at this fret (open note + fret number)
 			fret_note := open_mnn + i8(f)
-			// Check if this note is in our collection
 			match := false
-			for note, i in scale_collection {
+			for note, i in note_collection {
 				if note == fret_note {
 					match = true
 
@@ -1009,7 +1035,6 @@ fingering_for_scale :: proc(tuning: Tuning, scale_collection: Scale, allocator :
 						string_number = i8(string_index) + 1,
 						fret          = f,
 					}
-
 					append(&result[string_index], found_fretted_note)
 					break
 				}
@@ -1022,18 +1047,80 @@ fingering_for_scale :: proc(tuning: Tuning, scale_collection: Scale, allocator :
 					string_number = -1,
 					fret          = -1,
 				}
-				_, append_err := append(&result[string_index], not_found_fretted_note);if append_err != .None {
-					return nil, append_err
-				}
+				append(&result[string_index], not_found_fretted_note)
 			}
 		}
 	}
 	return result, .None
 }
 
-cleanup_fingering :: proc(f: Fingering) {
+
+cleanup_fingering :: proc(f: Fingering, allocator := context.allocator) {
 	for s, i in f {
 		delete(s)
 	}
 	delete(f)
+}
+
+
+/*
+
+CHORD DIAGRAMS
+
+*/
+
+FRET_SPAN: i8 = 5 // number of frets in a chord diagram
+
+ChordDiagram :: struct {
+	diagram_name:    string,
+	first_used_fret: i8,
+	fretted_notes:   [dynamic]FrettedNote, //6 for guitar, 4 for ukulele, etc.
+}
+
+
+chord_diagrams :: proc(note_name, string, chord_name: string, tuning: Tuning, allocator := context.allocator) -> ([]ChordDiagram, mem.Allocator_Error) #optional_allocator_error {
+
+	expanded_collection: NoteCollection
+	expand_error: mem.Allocator_Error
+	ok_finger: mem.Allocator_Error
+	ok_chord: bool
+	this_chord_fingering: Fingering
+	this_chord_collection: Chord
+
+	num_frets := tuning.strings[0].number_of_frets
+
+	// any octave will do, since the collection will be expanded
+	if this_chord_collection, ok_chord := chord(note_name, 3, chord_name); !ok_chord {
+		log.warnf("Couldn't get chord collection for %s %s %s", note_name, string, chord_name)
+		return nil, .None
+	}
+	defer delete(this_chord_collection)
+
+	if expanded_collection, expand_error = expand_collection(cast(NoteCollection)this_chord_collection, allocator); expand_error != .None {
+		log.warnf("Couldn't expand collection: %v", expand_error)
+		return nil, expand_error
+	}
+	defer delete(expanded_collection, allocator)
+
+	if this_chord_fingering, ok_finger := fingering(tuning, cast(NoteCollection)expanded_collection, allocator); ok_finger != .None {
+		log.warn("Couldn't get fingering")
+		return nil, ok_finger
+	}
+	defer cleanup_fingering(this_chord_fingering, allocator)
+
+
+	diagrams := make([dynamic]ChordDiagram, 0, allocator)
+
+	for f in 0 ..= num_frets {
+		if new_chord_diagram, ok := _try_chord_diagram(f, this_chord_fingering); ok {
+			append(&diagrams, new_chord_diagram)
+		}
+	}
+	return diagrams[:], .None
+}
+
+
+@(private = "file")
+_try_chord_diagram :: proc(at_fret: i8, for_fingering: Fingering) -> (ChordDiagram, bool) {
+	return ChordDiagram{}, false
 }
